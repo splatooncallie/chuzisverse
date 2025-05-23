@@ -1,13 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Movie Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+      background: #111;
+      color: #eee;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 70%;
+      border-radius: 5px 0 0 5px;
+      border: none;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 0 5px 5px 0;
+      border: none;
+      cursor: pointer;
+      background: #f90;
+      color: #111;
+      font-weight: bold;
+    }
+    .movies {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+      gap: 1rem;
+    }
+    .movie {
+      cursor: pointer;
+      background: #222;
+      padding: 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .movie:hover {
+      background: #333;
+    }
+    img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Movie Search</h1>
-  <input type="text" id="searchInput" placeholder="Search...">
-  <div id="movieList"></div>
+  <h1>Search for Films</h1>
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="Search movies by title..." required />
+    <button type="submit">Search</button>
+  </form>
 
-  <script src="movies.js"></script>
+  <div id="movies" class="movies"></div>
+
+  <script>
+    const apiKey = 'eec8827d'; // Your OMDb API key
+    const moviesDiv = document.getElementById('movies');
+    const form = document.getElementById('searchForm');
+    const input = document.getElementById('searchInput');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+
+      moviesDiv.innerHTML = 'Loading...';
+
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        if (data.Response === "True") {
+          moviesDiv.innerHTML = '';
+          data.Search.forEach(movie => {
+            const div = document.createElement('div');
+            div.className = 'movie';
+            div.innerHTML = `
+              <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/150x225?text=No+Image'}" alt="${movie.Title}" />
+              <div class="title">${movie.Title} (${movie.Year})</div>
+            `;
+            div.addEventListener('click', () => {
+              window.location.href = `movie.html?id=${movie.imdbID}`;
+            });
+            moviesDiv.appendChild(div);
+          });
+        } else {
+          moviesDiv.innerHTML = '<p>No results found.</p>';
+        }
+      } catch (error) {
+        moviesDiv.innerHTML = '<p>Error fetching movies.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
