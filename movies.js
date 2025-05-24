@@ -1,11 +1,10 @@
-@@ -1,408 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>chuzi's cinema ♡</title>
   <style>
- /* Reset and base styles */
+/* Reset and base styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,9 +30,11 @@ header {
 
 .topbar {
   display: flex;
+  align-items: center;
   gap: 1em;
 }
 
+/* Tab Buttons */
 .topbar button {
   background: transparent;
   border: 2px solid #e50914;
@@ -44,12 +45,23 @@ header {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5em; /* space between icon and text */
+}
+
+.topbar button i {
+  font-size: 14px;
 }
 
 .topbar button.active,
 .topbar button:hover {
   background-color: #e50914;
   color: #fff;
+}
+    .button-group {
+  display: flex;
+  gap: 1em; /* space between buttons */
 }
 
 /* Hero section */
@@ -217,22 +229,74 @@ footer {
   margin-top: 2em;
   font-size: 14px;
 }
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.movie-card {
+  width: 150px;
+  background-color: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.movie-card-title {
+  padding: 8px;
+}
+#watch-history h2,
+.mt6 h2,
+#watch-history {
+  padding: 0.7em 1.5em;
+}
 
   </style>
 </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <body>
   <header>
     <div class="topbar">
-      <button id="modeMovie" class="active" onclick="setMode('movie')">Movies</button>
-      <button id="modeSeries" onclick="setMode('series')">TV Series</button>
+        <img src="https://raw.githubusercontent.com/tatemcraeluvr/chuzicinema/main/chuzi%20flix%20logo.png" alt="ChuziFlix Logo" style="height: 36px; margin-right: 1em;">
+<div class="button-group">
+  <button id="modeMovie" class="btn active" onclick="setMode('movie')">
+    <i class="fas fa-play"></i> Movies
+  </button>
+  <button id="modeSeries" class="btn" onclick="setMode('series')">
+    <i class="fas fa-list"></i> TV Shows
+  </button>
+</div>
+</div>
+
     </div>
   </header>
   <section class="hero">
-  <h1>Welcome to chuzi's cinema ♡</h1>
+<img src="https://raw.githubusercontent.com/tatemcraeluvr/chuzicinema/main/chuzi%20flix%20logo.png" alt="ChuziFlix Logo" style="max-width: 320px; height: auto;">
   <p>Discover movies and shows you love. Stream everything in high quality with just one click.</p>
   <a href="#movieInput" class="cta">Start Watching</a>
 </section>
+
+  <section class="mt-6">
+  <h2>Watch History</h2>
+  <div id="watch-history" class="watch-section grid grid-cols-2 md:grid-cols-4 gap-4 p-2"></div>
+</section>
+
 
 
   <div class="search-container">
@@ -422,9 +486,17 @@ footer {
     }
   }
 
-  async function watchMovie(imdbID) {
- const finalURL = `https://vidsrc.xyz/embed/movie/${imdbID}`;
+async function watchMovie(imdbID) {
+  const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}`);
+  const movie = await res.json();
 
+  saveToWatchHistory({
+    title: movie.Title,
+    poster: movie.Poster,
+    timestamp: 1 // Or 0 if they just started
+  });
+
+  const finalURL = `https://vidsrc.xyz/embed/movie/${imdbID}`;
   const newTab = window.open("about:blank", "_blank");
   newTab.document.write(`
     <body style="margin:0;background:#000;">
@@ -433,8 +505,67 @@ footer {
               allowfullscreen>
         </iframe>
       </body>
-    `);
+  `);
+}
+</script>
+<script>
+// Save playback info (call this when a user starts or stops watching)
+function saveToWatchHistory({ title, poster, timestamp = 0 }) {
+  const history = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+  const updated = history.filter(item => item.title !== title);
+
+  updated.unshift({
+    title,
+    poster,
+    timestamp,
+    watchedAt: new Date().toISOString()
+  });
+
+  localStorage.setItem("watchHistory", JSON.stringify(updated.slice(0, 50)));
+}
+
+// Resume playback button handler (adjust to match your player)
+function resumePlayback(title, timestamp) {
+  // Example: redirect to player page with query params
+  window.location.href = `/player.html?title=${encodeURIComponent(title)}&timestamp=${timestamp}`;
+}
+
+
+// Render full Watch History
+function renderWatchHistory() {
+  const container = document.getElementById("watch-history");
+
+  const history = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+
+  if (history.length === 0) {
+    container.innerHTML += "<p>No watch history yet.</p>";
+    return;
   }
+
+  const list = document.createElement("div");
+  list.className = "movie-list";
+
+  history.forEach((entry) => {
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.innerHTML = `
+      <img src="${entry.poster}" alt="${entry.title}">
+      <div class="movie-card-title">${entry.title}</div>
+    `;
+    card.onclick = () => {
+      openPlayer(entry.id, entry.title, entry.poster);
+    };
+    list.appendChild(card);
+  });
+
+  container.appendChild(list);
+}
+
+
+// Call these on page load
+window.addEventListener("DOMContentLoaded", () => {
+  renderWatchHistory();
+});
 </script>
 
 </body>
