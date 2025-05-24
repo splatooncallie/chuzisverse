@@ -2,464 +2,112 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>chuzi's cinema ♡</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0d0d0d;
-    color: #fff;
-    padding: 2em;
-  }
-
-  h1 {
-    color: #b3003c;
-    font-size: 2.8em;
-    font-weight: bold;
-    margin-bottom: 1em;
-    text-shadow: 0 0 10px #b3003c;
-  }
-
-  .topbar {
-    display: flex;
-    gap: 1em;
-    margin-bottom: 2em;
-  }
-
-  .topbar button {
-    background: transparent;
-    border: 2px solid #b3003c;
-    color: #b3003c;
-    padding: 0.6em 1.4em;
-    border-radius: 999px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-
-  .topbar button.active,
-  .topbar button:hover {
-    background: #b3003c;
-    color: #fff;
-  }
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  <title>Enter Access Key</title>
+  <style>
+    body {
       background-color: #0d0d0d;
-      color: #ffffff;
-    }
-
-  .search-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 2em;
-  }
-    header {
+      color: white;
+      font-family: 'Inter', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 1em;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
       background-color: #1a1a1a;
-      border-bottom: 2px solid #b3003c;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
     }
-
-  input {
-    padding: 0.7em;
-    width: 300px;
-    font-size: 16px;
-    border-radius: 999px;
-    border: 2px solid #b3003c;
-    background: transparent;
-    color: white;
-    transition: 0.3s ease;
-  }
-    .topbar {
-      display: flex;
-      gap: 1em;
-    }
-
-  input:focus {
-    outline: none;
-    border-color: #e6005c;
-    box-shadow: 0 0 6px #e6005c;
-  }
-    .topbar button {
-      background: transparent;
-      border: 2px solid #b3003c;
-      color: #b3003c;
-      padding: 0.6em 1.2em;
-      border-radius: 999px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-  .search-btn {
-    padding: 0.7em 1.2em;
-    font-size: 16px;
-    background: #b3003c;
-    color: white;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-    .topbar button.active,
-    .topbar button:hover {
-      background-color: #b3003c;
-      color: #fff;
-    }
-
-  .search-btn:hover {
-    background: #e6005c;
-  }
-    .search-container {
-      display: flex;
-      justify-content: center;
-      margin: 2em 0;
-    }
-
-  .results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5em;
-  }
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      background-color: #1a1a1a;
-      padding: 1em 1.5em;
-      border-radius: 999px;
-      border: 2px solid #b3003c;
-    }
-
-  .card {
-    background: rgba(26, 26, 26, 0.95);
-    border-radius: 12px;
-    padding: 1em;
-    width: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 0 12px rgba(179, 0, 60, 0.2);
-    transition: 0.3s ease;
-  }
-    .search-bar input {
-      background: transparent;
+    input {
+      padding: 0.7em;
+      font-size: 1em;
+      border-radius: 5px;
       border: none;
-      outline: none;
-      color: white;
-      font-size: 16px;
-      width: 300px;
+      width: 250px;
+      margin-top: 1em;
     }
-
-  .card:hover {
-    box-shadow: 0 0 20px #b3003c;
-    transform: translateY(-3px);
-  }
-    .search-bar button {
-      background-color: #b3003c;
+    button {
+      padding: 0.7em 1.5em;
+      background-color: #e50914;
       color: white;
       border: none;
-      border-radius: 999px;
-      padding: 0.6em 1.2em;
+      border-radius: 30px;
+      font-size: 1em;
+      margin-top: 1em;
       cursor: pointer;
-      transition: 0.3s ease;
     }
-
-  .card img {
-    max-height: 300px;
-    border-radius: 8px;
-    margin-bottom: 1em;
-  }
-    .search-bar button:hover {
-      background-color: #e6005c;
+    button:hover {
+      background-color: #ff1f1f;
     }
-
-  .watch-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    color: #b3003c;
-    background: transparent;
-    border: 2px solid #b3003c;
-    border-radius: 999px;
-    font-weight: bold;
-    padding: 0.6em 1.4em;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-    .results {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5em;
-      padding: 2em;
+    .error {
+      color: #ff4b4b;
+      margin-top: 1em;
     }
-
-  .watch-btn:hover {
-    background: #b3003c;
-    color: #fff;
-  }
-    .card {
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      padding: 1em;
-      width: 220px;
-      text-align: center;
-      box-shadow: 0 0 12px rgba(179, 0, 60, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-  .watch-btn svg {
-    fill: #b3003c;
-    transition: 0.3s ease;
-  }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px #b3003c;
-    }
-
-  .watch-btn:hover svg {
-    fill: #fff;
-  }
-    .card img {
-      width: 100%;
-      border-radius: 6px;
-      margin-bottom: 0.5em;
-    }
-
-  .rating {
-    display: flex;
-    align-items: center;
-    gap: 0.3em;
-    margin: 0.5em 0;
-  }
-    .watch-btn {
-      background: transparent;
-      border: 2px solid #b3003c;
-      color: #b3003c;
-      border-radius: 999px;
-      padding: 0.5em 1em;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-  .quality {
-    font-size: 13px;
-    background: #444;
-    border-radius: 5px;
-    padding: 2px 6px;
-    margin-top: 0.4em;
-    color: #ddd;
-  }
-    .watch-btn:hover {
-      background: #b3003c;
-      color: white;
-    }
-
-  footer {
-    margin-top: 4em;
-    padding: 2em;
-    text-align: center;
-    font-size: 14px;
-    background: #1a1a1a;
-    color: #bbb;
-    border-top: 1px solid #333;
-  }
-    footer {
-      text-align: center;
-      padding: 2em;
-      color: #999;
-      background-color: #111;
-      margin-top: 2em;
-      font-size: 14px;
-    }
-</style>
-
+  </style>
 </head>
 <body>
-  <header>
-    <div class="topbar">
-      <button id="movieBtn" class="active">Movies</button>
-      <button id="seriesBtn">Series</button>
-    </div>
-  </header>
-
-  <div class="search-container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for a movie or series..."/>
-      <button class="search-btn" onclick="search()">Search</button>
-    </div>
+  <div class="container">
+    <h2>Enter Access Key</h2>
+    <input type="password" id="keyInput" placeholder="Enter your key" />
+    <br />
+    <button onclick="checkKey()">Submit</button>
+    <div id="errorMsg" class="error"></div>
   </div>
 
-  <div class="results" id="results"></div>
+  <script>
+    const CORRECT_KEY = "your-secret-key"; // replace with your actual key
+    let correctKey = null;
 
-  <footer>
-    © 2025 chuzi's cinema. All rights reserved.
-  </footer>
-
-
-<script>
-  const API_KEY = '951a6e7d';
-  let currentMode = 'movie';
-
-  function setMode(mode) {
-    currentMode = mode;
-    document.getElementById('modeMovie').classList.remove('active');
-    document.getElementById('modeSeries').classList.remove('active');
-    document.getElementById('mode' + (mode === 'movie' ? 'Movie' : 'Series')).classList.add('active');
-  }
-
-  async function findMedia() {
-    const input = document.getElementById('movieInput').value.trim();
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '';
-
-    if (!input) {
-      resultDiv.innerHTML = 'Please enter a title.';
-      return;
-    }
-
-    try {
-      const searchUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(input)}&type=${currentMode}`;
-      const searchRes = await fetch(searchUrl);
-      const searchData = await searchRes.json();
-
-      if (searchData.Response === 'False' || !searchData.Search?.length) {
-        resultDiv.innerHTML = 'Nothing found.';
-        return;
+    async function fetchKey() {
+      try {
+        const response = await fetch("protected/key.json");
+        const data = await response.json();
+        correctKey = data.key;
+        autoRedirectIfValid();
+      } catch (err) {
+        document.getElementById('errorMsg').textContent = "Failed to load key.";
       }
+    }
 
-      const filtered = searchData.Search.filter(item => item.Type === currentMode);
-      for (const item of filtered) {
-        const detailsUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&i=${item.imdbID}`;
-        const detailsRes = await fetch(detailsUrl);
-        const movie = await detailsRes.json();
+    function setCookie(name, value) {
+      const d = new Date();
+      d.setTime(d.getTime() + (3650 * 24 * 60 * 60 * 1000)); // 10 years
+      document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+    }
 
-        const quality = ['movie', 'series'].includes(movie.Type) ? 'HD' : 'SD';
-        resultDiv.innerHTML += `
-          <div class="card">
-            ${movie.Poster !== 'N/A' ? `<img src="${movie.Poster}" alt="Poster" />` : ''}
-            <strong>${movie.Title}</strong>
-            <div class="rating">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff4b4b"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-              ${movie.imdbRating}
-            </div>
-            <div class="quality">${quality}</div>
-            <button class="watch-btn" onclick="openPlayer('${movie.imdbID}', '${movie.Type}', \`${movie.Title.replace(/`/g, '\\`')}\`)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                <path d="M5 3L19 12L5 21V3Z"/>
-              </svg>
-              Watch now
-            </button>
-          </div>
-        `;
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function checkKey() {
+      const inputKey = document.getElementById('keyInput').value;
+      if (inputKey === CORRECT_KEY) {
+      if (inputKey === correctKey) {
+        setCookie('authKey', inputKey);
+        window.location.href = "home.html";
+      } else {
+        document.getElementById('errorMsg').textContent = "Incorrect key. Try again.";
       }
-    } catch (error) {
-      console.error(error);
-      resultDiv.innerHTML = 'Error fetching data.';
     }
-  }
 
-  async function openPlayer(imdbID, type, title) {
-    if (type === 'movie') {
-      await watchMovie(imdbID);
-    } else {
-      const win = window.open('', '_blank');
-      win.document.write(`
-        <style>
-          body { margin: 0; display: flex; background: #0d0d0d; color: white; font-family: sans-serif; }
-          iframe { border: none; width: 100%; height: 100vh; }
-          .sidebar {
-            width: 220px;
-            background: #1a1a1a;
-            padding: 1em;
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-          }
-          select {
-            padding: 0.5em;
-            border-radius: 5px;
-            border: none;
-            background: #333;
-            color: white;
-          }
-        </style>
-        <div class="sidebar">
-          <h3>${title}</h3>
-          <label>Season: <select id="seasonSelect"></select></label>
-          <label>Episode: <select id="episodeSelect"></select></label>
-        </div>
-        <iframe 
-        id="tvPlayer" 
-        src=""
-        allowfullscreen 
-        allow="fullscreen"></iframe>
-        <script>
-          const imdbID = "${imdbID}";
-          async function loadSeasons() {
-            const res = await fetch("https://www.omdbapi.com/?apikey=${API_KEY}&i=" + imdbID + "&type=series");
-            const data = await res.json();
-            const total = parseInt(data.totalSeasons);
-            const select = document.getElementById("seasonSelect");
-            for (let i = 1; i <= total; i++) {
-              select.innerHTML += "<option value='" + i + "'>Season " + i + "</option>";
-            }
-            select.value = "1";
-            loadEpisodes(1);
-          }
-
-          async function loadEpisodes(season) {
-            const res = await fetch("https://www.omdbapi.com/?apikey=${API_KEY}&i=" + imdbID + "&Season=" + season);
-            const data = await res.json();
-            const select = document.getElementById("episodeSelect");
-            select.innerHTML = "";
-            data.Episodes.forEach((ep, i) => {
-              select.innerHTML += "<option value='" + (i+1) + "'>Episode " + (i+1) + "</option>";
-            });
-            select.value = "1";
-            loadPlayer(season, 1);
-          }
-
-          function loadPlayer(season, episode) {
-            document.getElementById("tvPlayer").src = "https://vidsrc.xyz/embed/tv?imdb=" + imdbID + "&s=" + season + "&e=" + episode;
-          }
-
-          document.getElementById("seasonSelect").addEventListener("change", e => {
-            loadEpisodes(e.target.value);
-          });
-
-          document.getElementById("episodeSelect").addEventListener("change", e => {
-            const season = document.getElementById("seasonSelect").value;
-            loadPlayer(season, e.target.value);
-          });
-
-          loadSeasons();
-        <\/script>
-      `);
+    // Auto redirect if cookie is already valid
+    window.onload = function() {
+    function autoRedirectIfValid() {
+      const storedKey = getCookie('authKey');
+      if (storedKey === CORRECT_KEY) {
+      if (storedKey === correctKey) {
+        window.location.href = "home.html";
+      }
+    };
     }
-  }
 
-  async function watchMovie(imdbID) {
- const finalURL = `https://vidsrc.xyz/embed/movie/${imdbID}`;
-
-  const newTab = window.open("about:blank", "_blank");
-  newTab.document.write(`
-    <body style="margin:0;background:#000;">
-      <iframe src="${finalURL}" 
-              style="width:100%;height:100vh;border:none;" 
-              allowfullscreen>
-        </iframe>
-      </body>
-    `);
-  }
-</script>
-
+    // Run on page load
+    fetchKey();
+  </script>
 </body>
 </html>
