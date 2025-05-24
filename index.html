@@ -1,64 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Enter Access Key</title>
-  <style>
-    body {
-      background-color: #0d0d0d;
-      color: white;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      text-align: center;
-      background-color: #1a1a1a;
-      padding: 2em;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
-    }
-    input {
-      padding: 0.7em;
-      font-size: 1em;
-      border-radius: 5px;
-      border: none;
-      width: 250px;
-      margin-top: 1em;
-    }
-    button {
-      padding: 0.7em 1.5em;
-      background-color: #e50914;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-size: 1em;
-      margin-top: 1em;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ff1f1f;
-    }
-    .error {
-      color: #ff4b4b;
-      margin-top: 1em;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Enter Access Key</h2>
-    <input type="password" id="keyInput" placeholder="Enter your key" />
-    <br />
-    <button onclick="checkKey()">Submit</button>
+  <button onclick="checkKey()">Submit</button>
     <div id="errorMsg" class="error"></div>
+  </div>
+  <div id="cookieConsent" style="
+  position: fixed;
+  bottom: 0;
+  background: #222;
+  color: white;
+  width: 100%;
+  padding: 1em;
+  text-align: center;
+  z-index: 9999;
+  display: none;
+">
+  This site uses cookies to remember your access key. 
+  <button id="acceptCookies" style="margin-left: 10px; padding: 0.5em 1em; background: #e50914; border: none; color: white; border-radius: 5px; cursor: pointer;">
+    Accept
+  </button>
+</div>
+
+<script>
+  function setCookie(name, value, days = 3650) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  // Show cookie banner if user hasn't accepted cookies yet
+  if (!getCookie("cookiesAccepted")) {
+    document.getElementById("cookieConsent").style.display = "block";
+  }
+
+  // Handle accept button
+  document.getElementById("acceptCookies").addEventListener("click", function() {
+    setCookie("cookiesAccepted", "true");
+    document.getElementById("cookieConsent").style.display = "none";
+  });
+</script>
+  <div id="cookieConsent" style="
+    position: fixed;
+    bottom: 0;
+    background: #222;
+    color: white;
+    width: 100%;
+    padding: 1em;
+    text-align: center;
+    z-index: 9999;
+    display: none;">
+    This site uses cookies to remember your access key. 
+    <button id="acceptCookies" style="margin-left: 10px; padding: 0.5em 1em; background: #e50914; border: none; color: white; border-radius: 5px; cursor: pointer;">
+      Accept
+    </button>
   </div>
 
   <script>
-    const CORRECT_KEY = "your-secret-key"; // replace with your actual key
     let correctKey = null;
 
     async function fetchKey() {
@@ -73,41 +73,71 @@
     }
 
     function setCookie(name, value) {
+    function setCookie(name, value, days = 3650) {
       const d = new Date();
       d.setTime(d.getTime() + (3650 * 24 * 60 * 60 * 1000)); // 10 years
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
       document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
     }
 
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
+@@ -124,25 +88,52 @@ <h2>Enter Access Key</h2>
       if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function showError(message) {
+      document.getElementById('errorMsg').textContent = message;
+    }
+
+    async function fetchKeyAndInit() {
+      try {
+        const response = await fetch("protected/key.json");
+        const data = await response.json();
+        correctKey = data.key;
+
+        const storedKey = getCookie('authKey');
+        if (storedKey && storedKey === correctKey) {
+          window.location.href = "home.html";
+        }
+      } catch (err) {
+        showError("Failed to load key.");
+      }
     }
 
     function checkKey() {
       const inputKey = document.getElementById('keyInput').value;
-      if (inputKey === CORRECT_KEY) {
+      if (!correctKey) {
+        showError("Key not loaded yet. Please wait.");
+        return;
+      }
       if (inputKey === correctKey) {
         setCookie('authKey', inputKey);
         window.location.href = "home.html";
       } else {
         document.getElementById('errorMsg').textContent = "Incorrect key. Try again.";
+        showError("Incorrect key. Try again.");
       }
     }
 
-    // Auto redirect if cookie is already valid
-    window.onload = function() {
     function autoRedirectIfValid() {
       const storedKey = getCookie('authKey');
-      if (storedKey === CORRECT_KEY) {
       if (storedKey === correctKey) {
         window.location.href = "home.html";
       }
-    };
+    // Show cookie banner if not accepted
+    if (!getCookie("cookiesAccepted")) {
+      document.getElementById("cookieConsent").style.display = "block";
     }
 
     // Run on page load
     fetchKey();
+    // Accept cookie handler
+    document.getElementById("acceptCookies").addEventListener("click", function() {
+      setCookie("cookiesAccepted", "true");
+      document.getElementById("cookieConsent").style.display = "none";
+    });
+
+    // Start logic on page load
+    window.onload = fetchKeyAndInit;
   </script>
 </body>
 </html>
