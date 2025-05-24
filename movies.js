@@ -260,10 +260,11 @@ footer {
 .movie-card-title {
   padding: 8px;
 }
-#watch-history h2,
-.mt6 h2,
-#watch-history {
-  padding: 0.7em 1.5em;
+
+#watch-history,
+#continue-watching {
+  padding-left: 20px;
+  margin-bottom: 40px;
 }
 
   </style>
@@ -292,7 +293,12 @@ footer {
   <a href="#movieInput" class="cta">Start Watching</a>
 </section>
 
-  <section class="mt-6">
+  <section>
+  <h2>Continue Watching</h2>
+  <div id="continue-watching" class="watch-section grid grid-cols-2 md:grid-cols-4 gap-4 p-2"></div>
+</section>
+
+<section class="mt-6">
   <h2>Watch History</h2>
   <div id="watch-history" class="watch-section grid grid-cols-2 md:grid-cols-4 gap-4 p-2"></div>
 </section>
@@ -530,6 +536,28 @@ function resumePlayback(title, timestamp) {
   window.location.href = `/player.html?title=${encodeURIComponent(title)}&timestamp=${timestamp}`;
 }
 
+// Render Continue Watching section
+function renderContinueWatching() {
+  const container = document.getElementById("continue-watching");
+
+  const history = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+
+  const list = document.createElement("div");
+  list.className = "movie-list";
+
+  history.forEach((entry) => {
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.innerHTML = `
+      <img src="${entry.poster}" alt="${entry.title}">
+      <div class="movie-card-title">${entry.title}</div>
+    `;
+    list.appendChild(card);
+  });
+
+  container.appendChild(list);
+}
+
 
 // Render full Watch History
 function renderWatchHistory() {
@@ -564,6 +592,7 @@ function renderWatchHistory() {
 
 // Call these on page load
 window.addEventListener("DOMContentLoaded", () => {
+  renderContinueWatching();
   renderWatchHistory();
 });
 </script>
