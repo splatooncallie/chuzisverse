@@ -4,184 +4,223 @@
   <meta charset="UTF-8" />
   <title>chuzi's cinema ♡</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0d0d0d;
-      color: #ffffff;
-    }
+ /* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1em;
-      background-color: #1a1a1a;
-      border-bottom: 2px solid #e50914;
-    }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0d0d0d;
+  color: #ffffff;
+  line-height: 1.6;
+}
 
-    .topbar {
-      display: flex;
-      gap: 1em;
-    }
+/* Header */
+header {
+  background-color: #111;
+  border-bottom: 1px solid #e50914;
+  padding: 1em 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .topbar button {
-      background: transparent;
-      border: 2px solid #e50914;
-      color: #e50914;
-      padding: 0.6em 1.2em;
-      border-radius: 999px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+.topbar {
+  display: flex;
+  gap: 1em;
+}
 
-    .topbar button.active,
-    .topbar button:hover {
-      background-color: #e50914;
-      color: #fff;
-    }
-
-    .search-container {
-      display: flex;
-      justify-content: center;
-      margin: 2em 0;
-    }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      background-color: #1a1a1a;
-      padding: 1em 1.5em;
-      border-radius: 999px;
-      border: 2px solid #e50914;
-    }
-
-    .search-bar input {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      font-size: 16px;
-      width: 300px;
-    }
-
-    .search-bar button {
-      background-color: #e50914;
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 0.6em 1.2em;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .search-bar button:hover {
-      background-color: #ff1f1f;
-    }
-
-    .results {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5em;
-      padding: 2em;
-    }
-
-    .card {
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      padding: 1em;
-      width: 220px;
-      text-align: center;
-      box-shadow: 0 0 12px rgba(229, 9, 20, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px #e50914;
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 6px;
-      margin-bottom: 0.5em;
-    }
-
-    .rating {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3em;
-      margin: 0.3em 0;
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    .rating svg {
-    fill: #f5c518;
-    }
-
-
-    .quality {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 0.5em;
-    }
-
-    .watch-btn {
-      background: transparent;
-      border: 2px solid #e50914;
-      color: #e50914;
-      border-radius: 999px;
-      padding: 0.5em 1em;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: flex;
-    }
- .watch-btn {
-  background: #e50914;
-  border: none;
-  color: white;
-  border-radius: 999px;
-  padding: 0.5em 1.2em;
+.topbar button {
+  background: transparent;
+  border: 2px solid #e50914;
+  color: #e50914;
+  padding: 0.5em 1em;
+  border-radius: 30px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.topbar button.active,
+.topbar button:hover {
+  background-color: #e50914;
+  color: #fff;
+}
+
+/* Hero section */
+.hero {
+  background: linear-gradient(to top, #0d0d0d 20%, rgba(0,0,0,0.5)), url('https://i.imgur.com/w1d4Rkp.jpeg') no-repeat center center/cover;
+  background: linear-gradient(to top, #0d0d0d 20%, rgba(0,0,0,0.5)), url('https://media.licdn.com/dms/image/v2/D5612AQGy6sM0SJAdxg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1693150322893?e=2147483647&v=beta&t=2_aostRG53XjmjiS9FSI9Jcfn73tsoq3uFate9rV0XE') no-repeat center center/cover;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3em 2em;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.3em;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin-bottom: 1em;
+}
+
+.hero .cta {
+  display: inline-block;
+  background-color: #e50914;
+  padding: 0.7em 1.5em;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.hero .cta:hover {
+  background-color: #ff1f1f;
+}
+
+/* Search */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 3em 1em 2em;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background-color: #1a1a1a;
+  padding: 0.8em 1.5em;
+  border-radius: 999px;
+  border: 2px solid #e50914;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-bar input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+  flex: 1;
+}
+
+.search-bar button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+  background-color: #ff1f1f;
+}
+
+/* Results */
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5em;
+  padding: 2em;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+}
+
+.card img {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+}
+
+.card strong {
+  display: block;
+  font-size: 16px;
+  margin: 0.5em 0;
+}
+
+.rating {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0.5em;
-  gap: 0.4em;
+  gap: 0.3em;
+  font-size: 14px;
+  color: #f5c518;
+  margin-bottom: 0.3em;
 }
 
-    .watch-btn svg {
-      fill: #e50914;
-      transition: 0.3s;
-    }
+.rating svg {
+  fill: #f5c518;
+}
 
-    .watch-btn:hover {
-      background: #e50914;
-      color: white;
-    }
+.quality {
+  font-size: 12px;
+  color: #bbb;
+  margin-bottom: 0.6em;
+}
 
-    .watch-btn:hover svg {
-      fill: white;
-    }
+.watch-btn {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.4em 1em;
+  margin-bottom: 1em;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-    footer {
-      text-align: center;
-      padding: 2em;
-      color: #999;
-      background-color: #111;
-      margin-top: 2em;
-      font-size: 14px;
-    }
+.watch-btn:hover {
+  background-color: #ff1f1f;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2em 1em;
+  color: #999;
+  background-color: #111;
+  margin-top: 2em;
+  font-size: 14px;
+}
+
   </style>
 </head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <body>
   <header>
     <div class="topbar">
@@ -189,6 +228,12 @@
       <button id="modeSeries" onclick="setMode('series')">TV Series</button>
     </div>
   </header>
+  <section class="hero">
+  <h1>Welcome to chuzi's cinema ♡</h1>
+  <p>Discover movies and shows you love. Stream everything in high quality with just one click.</p>
+  <a href="#movieInput" class="cta">Start Watching</a>
+</section>
+
 
   <div class="search-container">
     <div class="search-bar">
