@@ -1,143 +1,364 @@
-  <button onclick="checkKey()">Submit</button>
-    <div id="errorMsg" class="error"></div>
-  </div>
-  <div id="cookieConsent" style="
-  position: fixed;
-  bottom: 0;
-  background: #222;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>chuzi's cinema ♡</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d0d0d;
+      color: #ffffff;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1em;
+      background-color: #1a1a1a;
+      border-bottom: 2px solid #e50914;
+    }
+
+    .topbar {
+      display: flex;
+      gap: 1em;
+    }
+
+    .topbar button {
+      background: transparent;
+      border: 2px solid #e50914;
+      color: #e50914;
+      padding: 0.6em 1.2em;
+      border-radius: 999px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .topbar button.active,
+    .topbar button:hover {
+      background-color: #e50914;
+      color: #fff;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin: 2em 0;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      background-color: #1a1a1a;
+      padding: 1em 1.5em;
+      border-radius: 999px;
+      border: 2px solid #e50914;
+    }
+
+    .search-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 16px;
+      width: 300px;
+    }
+
+    .search-bar button {
+      background-color: #e50914;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 0.6em 1.2em;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #ff1f1f;
+    }
+
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5em;
+      padding: 2em;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 1em;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px #e50914;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 0.5em;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3em;
+      margin: 0.3em 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .rating svg {
+    fill: #f5c518;
+    }
+
+
+    .quality {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 0.5em;
+    }
+
+    .watch-btn {
+      background: transparent;
+      border: 2px solid #e50914;
+      color: #e50914;
+      border-radius: 999px;
+      padding: 0.5em 1em;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      display: flex;
+    }
+ .watch-btn {
+  background: #e50914;
+  border: none;
   color: white;
-  width: 100%;
-  padding: 1em;
-  text-align: center;
-  z-index: 9999;
-  display: none;
-">
-  This site uses cookies to remember your access key. 
-  <button id="acceptCookies" style="margin-left: 10px; padding: 0.5em 1em; background: #e50914; border: none; color: white; border-radius: 5px; cursor: pointer;">
-    Accept
-  </button>
-</div>
+  border-radius: 999px;
+  padding: 0.5em 1.2em;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5em;
+  gap: 0.4em;
+}
+
+    .watch-btn svg {
+      fill: #e50914;
+      transition: 0.3s;
+    }
+
+    .watch-btn:hover {
+      background: #e50914;
+      color: white;
+    }
+
+    .watch-btn:hover svg {
+      fill: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2em;
+      color: #999;
+      background-color: #111;
+      margin-top: 2em;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <button id="modeMovie" class="active" onclick="setMode('movie')">Movies</button>
+      <button id="modeSeries" onclick="setMode('series')">TV Series</button>
+    </div>
+  </header>
+
+  <div class="search-container">
+    <div class="search-bar">
+      <input type="text" id="movieInput" placeholder="Enter a title..." />
+      <button class="search-btn" onclick="findMedia()">Search</button>
+    </div>
+  </div>
+
+  <div id="result" class="results"></div>
+
+  <footer>
+    © 2025 chuzi's cinema. All rights reserved.
+  </footer>
 
 <script>
-  function setCookie(name, value, days = 3650) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+  const API_KEY = '951a6e7d';
+  let currentMode = 'movie';
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeMovie').classList.remove('active');
+    document.getElementById('modeSeries').classList.remove('active');
+    document.getElementById('mode' + (mode === 'movie' ? 'Movie' : 'Series')).classList.add('active');
   }
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
+  async function findMedia() {
+    const input = document.getElementById('movieInput').value.trim();
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '';
 
-  // Show cookie banner if user hasn't accepted cookies yet
-  if (!getCookie("cookiesAccepted")) {
-    document.getElementById("cookieConsent").style.display = "block";
-  }
-
-  // Handle accept button
-  document.getElementById("acceptCookies").addEventListener("click", function() {
-    setCookie("cookiesAccepted", "true");
-    document.getElementById("cookieConsent").style.display = "none";
-  });
-</script>
-  <div id="cookieConsent" style="
-    position: fixed;
-    bottom: 0;
-    background: #222;
-    color: white;
-    width: 100%;
-    padding: 1em;
-    text-align: center;
-    z-index: 9999;
-    display: none;">
-    This site uses cookies to remember your access key. 
-    <button id="acceptCookies" style="margin-left: 10px; padding: 0.5em 1em; background: #e50914; border: none; color: white; border-radius: 5px; cursor: pointer;">
-      Accept
-    </button>
-  </div>
-
-  <script>
-    let correctKey = null;
-
-    async function fetchKey() {
-      try {
-        const response = await fetch("protected/key.json");
-        const data = await response.json();
-        correctKey = data.key;
-        autoRedirectIfValid();
-      } catch (err) {
-        document.getElementById('errorMsg').textContent = "Failed to load key.";
-      }
+    if (!input) {
+      resultDiv.innerHTML = 'Please enter a title.';
+      return;
     }
 
-    function setCookie(name, value) {
-    function setCookie(name, value, days = 3650) {
-      const d = new Date();
-      d.setTime(d.getTime() + (3650 * 24 * 60 * 60 * 1000)); // 10 years
-      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-      document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
-    }
+    try {
+      const searchUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(input)}&type=${currentMode}`;
+      const searchRes = await fetch(searchUrl);
+      const searchData = await searchRes.json();
 
-@@ -124,25 +88,52 @@ <h2>Enter Access Key</h2>
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    function showError(message) {
-      document.getElementById('errorMsg').textContent = message;
-    }
-
-    async function fetchKeyAndInit() {
-      try {
-        const response = await fetch("protected/key.json");
-        const data = await response.json();
-        correctKey = data.key;
-
-        const storedKey = getCookie('authKey');
-        if (storedKey && storedKey === correctKey) {
-          window.location.href = "home.html";
-        }
-      } catch (err) {
-        showError("Failed to load key.");
-      }
-    }
-
-    function checkKey() {
-      const inputKey = document.getElementById('keyInput').value;
-      if (!correctKey) {
-        showError("Key not loaded yet. Please wait.");
+      if (searchData.Response === 'False' || !searchData.Search?.length) {
+        resultDiv.innerHTML = 'Nothing found.';
         return;
       }
-      if (inputKey === correctKey) {
-        setCookie('authKey', inputKey);
-        window.location.href = "home.html";
-      } else {
-        document.getElementById('errorMsg').textContent = "Incorrect key. Try again.";
-        showError("Incorrect key. Try again.");
+
+      const filtered = searchData.Search.filter(item => item.Type === currentMode);
+      for (const item of filtered) {
+        const detailsUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&i=${item.imdbID}`;
+        const detailsRes = await fetch(detailsUrl);
+        const movie = await detailsRes.json();
+
+        const quality = ['movie', 'series'].includes(movie.Type) ? 'HD' : 'SD';
+        resultDiv.innerHTML += `
+          <div class="card">
+            ${movie.Poster !== 'N/A' ? `<img src="${movie.Poster}" alt="Poster" />` : ''}
+            <strong>${movie.Title}</strong>
+            <div class="rating">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff4b4b"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              ${movie.imdbRating}
+            </div>
+            <div class="quality">${quality}</div>
+            <button class="watch-btn" onclick="openPlayer('${movie.imdbID}', '${movie.Type}', \`${movie.Title.replace(/`/g, '\\`')}\`)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                <path d="M5 3L19 12L5 21V3Z"/>
+              </svg>
+              Watch now
+            </button>
+          </div>
+        `;
       }
+    } catch (error) {
+      console.error(error);
+      resultDiv.innerHTML = 'Error fetching data.';
     }
+  }
 
-    function autoRedirectIfValid() {
-      const storedKey = getCookie('authKey');
-      if (storedKey === correctKey) {
-        window.location.href = "home.html";
-      }
-    // Show cookie banner if not accepted
-    if (!getCookie("cookiesAccepted")) {
-      document.getElementById("cookieConsent").style.display = "block";
+  async function openPlayer(imdbID, type, title) {
+    if (type === 'movie') {
+      await watchMovie(imdbID);
+    } else {
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <style>
+          body { margin: 0; display: flex; background: #0d0d0d; color: white; font-family: sans-serif; }
+          iframe { border: none; width: 100%; height: 100vh; }
+          .sidebar {
+            width: 220px;
+            background: #1a1a1a;
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+          }
+          select {
+            padding: 0.5em;
+            border-radius: 5px;
+            border: none;
+            background: #333;
+            color: white;
+          }
+        </style>
+        <div class="sidebar">
+          <h3>${title}</h3>
+          <label>Season: <select id="seasonSelect"></select></label>
+          <label>Episode: <select id="episodeSelect"></select></label>
+        </div>
+        <iframe 
+        id="tvPlayer" 
+        src=""
+        allowfullscreen 
+        allow="fullscreen"></iframe>
+        <script>
+          const imdbID = "${imdbID}";
+          async function loadSeasons() {
+            const res = await fetch("https://www.omdbapi.com/?apikey=${API_KEY}&i=" + imdbID + "&type=series");
+            const data = await res.json();
+            const total = parseInt(data.totalSeasons);
+            const select = document.getElementById("seasonSelect");
+            for (let i = 1; i <= total; i++) {
+              select.innerHTML += "<option value='" + i + "'>Season " + i + "</option>";
+            }
+            select.value = "1";
+            loadEpisodes(1);
+          }
+
+          async function loadEpisodes(season) {
+            const res = await fetch("https://www.omdbapi.com/?apikey=${API_KEY}&i=" + imdbID + "&Season=" + season);
+            const data = await res.json();
+            const select = document.getElementById("episodeSelect");
+            select.innerHTML = "";
+            data.Episodes.forEach((ep, i) => {
+              select.innerHTML += "<option value='" + (i+1) + "'>Episode " + (i+1) + "</option>";
+            });
+            select.value = "1";
+            loadPlayer(season, 1);
+          }
+
+          function loadPlayer(season, episode) {
+            document.getElementById("tvPlayer").src = "https://vidsrc.xyz/embed/tv?imdb=" + imdbID + "&s=" + season + "&e=" + episode;
+          }
+
+          document.getElementById("seasonSelect").addEventListener("change", e => {
+            loadEpisodes(e.target.value);
+          });
+
+          document.getElementById("episodeSelect").addEventListener("change", e => {
+            const season = document.getElementById("seasonSelect").value;
+            loadPlayer(season, e.target.value);
+          });
+
+          loadSeasons();
+        <\/script>
+      `);
     }
+  }
 
-    // Run on page load
-    fetchKey();
-    // Accept cookie handler
-    document.getElementById("acceptCookies").addEventListener("click", function() {
-      setCookie("cookiesAccepted", "true");
-      document.getElementById("cookieConsent").style.display = "none";
-    });
+  async function watchMovie(imdbID) {
+ const finalURL = `https://vidsrc.xyz/embed/movie/${imdbID}`;
 
-    // Start logic on page load
-    window.onload = fetchKeyAndInit;
-  </script>
+  const newTab = window.open("about:blank", "_blank");
+  newTab.document.write(`
+    <body style="margin:0;background:#000;">
+      <iframe src="${finalURL}" 
+              style="width:100%;height:100vh;border:none;" 
+              allowfullscreen>
+        </iframe>
+      </body>
+    `);
+  }
+</script>
+
 </body>
 </html>
